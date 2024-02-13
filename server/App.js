@@ -3,6 +3,7 @@ const db = require("./models");
 const cors = require("cors")
 const authRouter = require('./routes/auth.routes');
 const userRouter = require('./routes/user.routes');
+const roleRouter =require('./routes/role.routes');
 
 const cookieParser = require('cookie-parser');
 
@@ -11,9 +12,11 @@ const PORT = process.env.PORT || 8001;
 
 app.use(cookieParser());
 app.use(express.json());
-app.use(cors("*")); 
+app.use(cors()); 
 app.use('/user', authRouter);
 app.use('/user', userRouter);
+app.use('/role', roleRouter);
+
 
 const connectionString = db.url;
 console.log(connectionString);

@@ -19,6 +19,10 @@ const userSchema = new mongoose.Schema({
     ref: 'Role',
     default:"65c4be520640282d31309a27"
   },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const User = mongoose.model('User', userSchema);

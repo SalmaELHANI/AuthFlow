@@ -16,8 +16,8 @@ exports.getAllUsers = async (req, res) => {
 exports.updateRoleUser = async (req, res) => {
   try {
     const { id } = req.params;
-    const { role } = req.body;
-    const targetRole = await Role.findOne({ name: role });
+    const {name} = req.body;
+    const targetRole = await Role.findOne({ name });
     if (!targetRole) {
       return res.status(404).json({ error: 'Role not found' });
     }
@@ -72,4 +72,4 @@ exports.deleteUser = async (req, res) => {
       } catch (error) {
         res.status(500).json({ error: error.message });
       }
-};
+};  

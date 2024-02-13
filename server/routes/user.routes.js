@@ -4,8 +4,8 @@ const userController = require("../controllers/user.controller");
 const { verifyAdmin ,verifyToken } = require("../middleware/authmiddleware");
 
 
-router.get('/get-all', verifyAdmin,userController.getAllUsers);
-router.post('/assign-roles',verifyAdmin, userController.updateRoleUser);
+router.get('/get-all',verifyAdmin,userController.getAllUsers);
+router.put('/assign-roles/:id',verifyAdmin, userController.updateRoleUser);
 
 router.put(`/:id`,verifyToken,userController.updateUser);
 router.delete(`/:id`,verifyToken,userController.deleteUser);

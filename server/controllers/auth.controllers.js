@@ -48,7 +48,7 @@ function sendVerificationEmail(email, token) {
       user: 'salmaelhani7@gmail.com',
       pass: 'iswbqzzlrzxwqsra',
     },
-  });
+});
 
   // Lien de vérification dans l'email
   const verificationLink = `http://localhost:5173/verify-email/${token}`;
@@ -56,7 +56,7 @@ function sendVerificationEmail(email, token) {
 
   // Contenu de l'email
   const mailOptions = {
-    from: 'ismail.kes2001@gmail.com',
+    from: 'salmaelhani7@gmail.com',
     to: email,
     subject: 'Vérification d\'email',
     text: `Cliquez sur le lien suivant pour vérifier votre email : ${verificationLink}`,

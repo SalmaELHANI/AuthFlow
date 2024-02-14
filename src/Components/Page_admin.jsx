@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-const PageAdmin = () => {
+const PageAdmin = () => { 
   const [cookies, setCookies, removeCookie] = useCookies(["access_token"]);
   const navigate = useNavigate();
   const [values, setValues] = useState({

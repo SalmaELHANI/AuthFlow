@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
 import axios from "axios";
+import { useSelector } from 'react-redux';
 
 function PageUser(){
-    const username =localStorage.getItem('UserName');
-    const userId =localStorage.getItem('userID');
+    const isAuthenticated = useSelector((state) => state.user.isAuthenticated);
+    const username = useSelector((state) => state.user.username);
+    const userId =useSelector((state) => state.user.id);
     const [cookies, setCookies, removeCookie] = useCookies(["access_token"]);
     const navigate = useNavigate();
 

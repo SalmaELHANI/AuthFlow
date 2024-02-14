@@ -2,8 +2,11 @@ import axios from "axios";
 import React, { useState } from "react";
 import { Link ,useNavigate } from 'react-router-dom';
 import { useCookies } from 'react-cookie';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../redux/slices/UserSlice';
 
 const Login = () => {
+    const dispatch = useDispatch();
     const [error, setError] = useState(null);
     const [values, setValues] = useState({
         email: "",
@@ -52,13 +55,12 @@ const Login = () => {
               
               if (payload) {
                 console.log('JWT Payload:', payload);
-                // Access payload properties, e.g., payload.userId, payload.username, etc.
+                const { id, username } = payload;
+                dispatch(setUser({ id, username }));
               } else {
                 console.log('Invalid JWT token or unable to extract payload.');
               }
-              
-            localStorage.setItem('UserName', payload.username);
-            localStorage.setItem('UserID', response.data.id);
+           
 
         if(response.data.role === 'user') {
             navigate('/user_page');

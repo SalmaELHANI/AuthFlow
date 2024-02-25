@@ -39,3 +39,4 @@ const startserver = async () =>{
 } 
 // To start the server:
 startserver();
+module.exports = app;

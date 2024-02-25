@@ -3,19 +3,24 @@ import axios from 'axios';
 import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-const PageAdmin = () => { 
-  const [cookies, setCookies, removeCookie] = useCookies(["access_token"]);
+const handleRequestError = (error) => {
+  console.error('Error fetching data:', error);
+};
+
+const API_URL = 'http://localhost:5001/user';
+
+const PageAdmin = () => {
   const navigate = useNavigate();
   const [values, setValues] = useState({
     name: '',
   });
-
+  
   const [users, setUsers] = useState([]);
   const [selectedUser, setSelectedUser] = useState(null);
-
-  // Retrieve the token from cookies
-  const token = cookies['access_token'];  // Utilisez cookies au lieu de useCookies
-  console.log("token",token );
+  
+  
+  const [cookies, setCookies, removeCookie] = useCookies(['access_token']);
+  const token = cookies['access_token'];
 
   const handleSeeMoreClick = (userId) => {
     setSelectedUser(userId);
@@ -27,17 +32,16 @@ const PageAdmin = () => {
 
   const fetchData = async () => {
     try {
-
-      const response = await axios.get('http://localhost:5001/user/get-all', {
+      const response = await axios.get(`${API_URL}/get-all`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
-  
+
       setUsers(response.data);
       console.log(response.data);
     } catch (error) {
-      console.error('Error fetching data:', error);
+      handleRequestError(error);
     }
   };
 
@@ -47,14 +51,14 @@ const PageAdmin = () => {
 
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:5001/user/${id}`,{
+      await axios.delete(`${API_URL}/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       fetchData();
     } catch (error) {
-      console.log(error);
+      handleRequestError(error);
     }
   };
 
@@ -62,23 +66,24 @@ const PageAdmin = () => {
     try {
       console.log(values);
       console.log(id);
-      await axios.put(`http://localhost:5001/user/assign-roles/${id}`, values,{
+      await axios.put(`${API_URL}/assign-roles/${id}`, values, {
         headers: {
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       });
       fetchData();
     } catch (error) {
-      console.log(error);
+      handleRequestError(error);
     }
   };
 
   const handleLogout = () => {
-    removeCookie("access_token");
-    localStorage.removeItem("UserName");
-    localStorage.removeItem("UserID");
+    removeCookie('access_token');
+    localStorage.removeItem('UserName');
+    localStorage.removeItem('UserID');
     navigate('/login');
   };
+
 
   return (
     <div className="grid grid-cols-3 gap-4 h-screen">
@@ -86,9 +91,8 @@ const PageAdmin = () => {
         {users.map((user) => (
           <div
             key={user._id}
-            className={`flex flex-col justify-center gap-2 bg-white rounded-lg shadow-2xl p-4 mb-4 ${
-              selectedUser === user._id ? 'border-4 border-purple-500' : ''
-            }`}
+            className={`flex flex-col justify-center gap-2 bg-white rounded-lg shadow-2xl p-4 mb-4 ${selectedUser === user._id ? 'border-4 border-purple-500' : ''
+              }`}
           >
             <div className="flex gap-2 items-center">
               <img
@@ -163,7 +167,7 @@ const PageAdmin = () => {
                 id="name"
                 name="name"
                 value={values.name}
-                    onChange={(e) => setValues({ ...values, name: e.target.value })}
+                onChange={(e) => setValues({ ...values, name: e.target.value })}
               />
               <button onClick={() => handleUpdate(selectedUser)}>
                 {/* Mettre à jour le rôle */}
@@ -191,13 +195,13 @@ const PageAdmin = () => {
         )}
       </div>
       <button
-            className="w-full bg-[#DB89D5] hover:bg-[#a21caf]  font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white"
-            type="submit"
-            onClick={handleLogout}>
+        className="w-full bg-[#DB89D5] hover:bg-[#a21caf]  font-medium rounded-lg text-sm px-5 py-2.5 text-center text-white"
+        type="submit"
+        onClick={handleLogout}>
         Logout
-    </button>
+      </button>
     </div>
-    
+
   );
 };
 
